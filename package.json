@@ -1,16 +1,11 @@
 {
   "name": "airbnb",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "tailwind": "tailwindcss -i ./views/input.css -o ./public/output.",
-    "start": "nodemon app.js & npm run tailwind"
+    "start": "node app.js",
+    "build": "npx tailwindcss -i ./views/input.css -o ./public/output.css"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "body-parser": "^2.3.0",
     "ejs": "^6.0.1",
