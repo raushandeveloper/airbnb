@@ -2,6 +2,15 @@
 const path = require('path');
 const fs = require('fs');
 
+// Catch any error that would otherwise crash the process silently,
+// and log it so we can see the real cause instead of a blank exit.
+process.on('uncaughtException', (err) => {
+  console.log('UNCAUGHT EXCEPTION: ', err && err.stack ? err.stack : err);
+});
+process.on('unhandledRejection', (reason) => {
+  console.log('UNHANDLED REJECTION: ', reason && reason.stack ? reason.stack : reason);
+});
+
 // External Module
 const express = require('express');
 const session = require('express-session');
