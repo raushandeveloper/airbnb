@@ -52,40 +52,28 @@ store.on('error', (err) => {
   console.log('Session store error: ', err);
 });
 
-// Photos go into an "airbnb/photos" folder on Cloudinary, stored as images
-const photoStorage = new CloudinaryStorage({
+// Cloudinary storage: photos go into "airbnb/photos" as images,
+// PDFs go into "airbnb/pdfs" as raw files. Using a single CloudinaryStorage
+// engine with a dynamic params function (the officially supported way)
+// instead of a hand-rolled dual-engine wrapper.
+const cloudinaryStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: 'airbnb/photos',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+  params: (req, file) => {
+    if (file.fieldname === 'pdf') {
+      return {
+        folder: 'airbnb/pdfs',
+        resource_type: 'raw',
+      };
+    }
+    return {
+      folder: 'airbnb/photos',
+      allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+    };
   },
 });
-
-// PDFs go into an "airbnb/pdfs" folder, stored as raw files
-const pdfStorage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'airbnb/pdfs',
-    resource_type: 'raw',
-    allowed_formats: ['pdf'],
-  },
-});
-
-// multer needs one storage engine per call, so we use a small custom
-// storage wrapper that picks photoStorage or pdfStorage per file field.
-const multiStorage = {
-  _handleFile(req, file, cb) {
-    const storage = file.fieldname === 'pdf' ? pdfStorage : photoStorage;
-    storage._handleFile(req, file, cb);
-  },
-  _removeFile(req, file, cb) {
-    const storage = file.fieldname === 'pdf' ? pdfStorage : photoStorage;
-    storage._removeFile(req, file, cb);
-  },
-};
 
 const multerOptions = {
-  storage: multiStorage,
+  storage: cloudinaryStorage,
 }
 
 app.use(express.urlencoded({ extended: true }));
