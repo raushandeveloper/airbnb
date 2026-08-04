@@ -1,4 +1,6 @@
 // Core Module
 const path = require('path');
 
-module.exports = path.dirname(require.main.filename);
+// pathUtil.js khud utils/ folder ke andar hai,
+// isliye ek level upar (..) jaake project root milega
+module.exports = path.join(__dirname, '..');
