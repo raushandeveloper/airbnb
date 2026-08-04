@@ -1,0 +1,63 @@
+﻿<header class="bg-red-500 text-white shadow-md">
+  <nav class="container mx-auto flex flex-wrap items-center justify-between gap-4 px-4 py-3">
+    <a href="/" class="inline-flex items-center rounded-md px-4 py-2 text-lg font-semibold tracking-wide transition duration-300 <%= currentPage === 'index' ? 'bg-red-700 text-white shadow-sm' : 'bg-red-600 text-white hover:bg-red-700' %>">
+      Airbnb
+    </a>
+
+    <ul class="flex flex-wrap items-center gap-2">
+      <% if (isLoggedIn) { %>
+        <% const isHost = typeof user !== 'undefined' && user && (user.userType === 'host' || user.role === 'host'); %>
+
+        <% if (isHost) { %>
+          <li>
+            <a href="/host/host-home-list" class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition duration-300 <%= currentPage === 'host-homes' ? 'bg-red-700 text-white shadow-sm' : 'bg-red-500 text-white hover:bg-red-600' %>">
+              Host Homes
+            </a>
+          </li>
+          <li>
+            <a href="/host/add-home" class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition duration-300 <%= currentPage === 'addHome' ? 'bg-red-700 text-white shadow-sm' : 'bg-red-500 text-white hover:bg-red-600' %>">
+              Add Home
+            </a>
+          </li>
+        <% } else { %>
+          <li>
+            <a href="/homes" class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition duration-300 <%= currentPage === 'Home' ? 'bg-red-700 text-white shadow-sm' : 'bg-red-500 text-white hover:bg-red-600' %>">
+              Homes
+            </a>
+          </li>
+          <li>
+            <a href="/favourites" class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition duration-300 <%= currentPage === 'favourites' ? 'bg-red-700 text-white shadow-sm' : 'bg-red-500 text-white hover:bg-red-600' %>">
+              Favourites
+            </a>
+          </li>
+          <li>
+            <a href="/bookings" class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition duration-300 <%= currentPage === 'bookings' ? 'bg-red-700 text-white shadow-sm' : 'bg-red-500 text-white hover:bg-red-600' %>">
+              Bookings
+            </a>
+          </li>
+        <% } %>
+      <% } %>
+
+      <% if (!isLoggedIn) { %>
+        <li>
+          <a href="/login" <%= currentPage === 'login' ? 'aria-current="page"' : '' %> class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition duration-300 <%= currentPage === 'login' ? 'bg-green-600 text-white shadow-sm' : 'bg-red-500 hover:bg-red-600 text-white' %>">
+            Login
+          </a>
+        </li>
+        <li>
+          <a href="/signup" <%= currentPage === 'signup' ? 'aria-current="page"' : '' %> class="inline-flex items-center rounded-md px-4 py-2 text-sm font-medium transition duration-300 <%= currentPage === 'signup' ? 'bg-red-700 text-white shadow-sm' : 'bg-red-500 text-white hover:bg-red-600' %>">
+            Sign Up
+          </a>
+        </li>
+      <% } else { %>
+        <li>
+          <form action="/logout" method="POST">
+            <button type="submit" class="inline-flex items-center rounded-md bg-red-500 bg-opacity-10 px-4 py-2 text-sm font-medium text-white transition duration-300 hover:bg-red-600 hover:text-white">
+              Logout
+            </button>
+          </form>
+        </li>
+      <% } %>
+    </ul>
+  </nav>
+</header>

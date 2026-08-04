@@ -1,0 +1,12 @@
+<form action="/favourites" method="POST" class="inline-flex">
+  <button
+    type="submit"
+    class="inline-flex items-center gap-2 rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm font-medium text-green-700 transition duration-300 hover:bg-green-100 hover:text-green-800"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 text-red-500">
+      <path d="M12 21s-6.716-4.35-9.193-8.025C1.498 10.886 2.307 7 5.696 7c2.148 0 3.404 1.233 4.304 2.364C10.9 8.233 12.156 7 14.304 7c3.389 0 4.198 3.886 2.889 5.975C18.716 16.65 12 21 12 21z"/>
+    </svg>
+    Favourite
+  </button>
+  <input type="hidden" name="id" value="<%= home._id %>" />
+</form>

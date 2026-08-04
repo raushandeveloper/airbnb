@@ -1,0 +1,64 @@
+<%- include('../partials/head') %>
+  </head>
+  <body class="bg-[#f5efe6]">
+      <%- include('../partials/nav') %>
+      <main class="container mx-auto mt-10 max-w-6xl rounded-2xl bg-[#fbf8f3] p-8 shadow-xl">
+          <h2 class="mb-8 text-center text-3xl font-bold text-red-500">
+              Details of <%= home.houseName %>
+          </h2>
+
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-start">
+              <div class="overflow-hidden rounded-2xl border border-[#e8dcc8] bg-white p-2 shadow-md">
+                  <img src="<%= home.photo %>" alt="<%= home.houseName %>" class="h-96 w-full object-cover rounded-xl">
+              </div>
+
+              <div class="space-y-4 rounded-2xl border border-[#e8dcc8] bg-white p-4 shadow-sm">
+                  <div class="border-b border-[#e8dcc8] pb-3">
+                      <h3 class="mb-1 text-xl font-semibold text-[#6b4f3a]">Description</h3>
+                      <p class="text-sm text-[#8a735d]"><%= home.description %></p>
+                  </div>
+
+                  <div class="border-b border-[#e8dcc8] pb-3">
+                      <h3 class="mb-1 text-xl font-semibold text-[#6b4f3a]">Location</h3>
+                      <p class="text-sm text-[#8a735d]"><%= home.location %></p>
+                  </div>
+
+                  <div class="border-b border-[#e8dcc8] pb-3">
+                      <h3 class="mb-1 text-xl font-semibold text-[#6b4f3a]">Price</h3>
+                      <p class="text-lg font-bold text-green-600">Rs <%= home.price %> / night</p>
+                  </div>
+
+                  <div class="border-b border-[#e8dcc8] pb-3">
+                      <h3 class="mb-1 text-xl font-semibold text-[#6b4f3a]">Rating</h3>
+                      <div class="flex items-center">
+                          <span class="text-lg text-yellow-400">★</span>
+                          <span class="ml-2 text-base text-[#7d654e]"><%= home.rating %> / 5</span>
+                      </div>
+                  </div>
+
+                  <% if (isLoggedIn) { %>
+                    <div class="border-b border-[#e8dcc8] pb-3">
+                      <h3 class="mb-1 text-xl font-semibold text-[#6b4f3a]">Property PDF</h3>
+                      <% if (home.pdf) { %>
+                        <a href="<%= home.pdf %>" target="_blank" class="inline-flex rounded-md bg-red-500 px-4 py-2 text-sm font-semibold text-white hover:bg-red-600">
+                          Open PDF
+                        </a>
+                      <% } else { %>
+                        <p class="text-sm text-[#8a735d]">No PDF uploaded for this property.</p>
+                      <% } %>
+                    </div>
+                  <% } else { %>
+                    <div class="border-b border-[#e8dcc8] pb-3">
+                      <h3 class="mb-1 text-xl font-semibold text-[#6b4f3a]">Property PDF</h3>
+                      <p class="text-sm text-[#8a735d]">Login to view the PDF details.</p>
+                    </div>
+                  <% } %>
+
+                  <div class="mt-2">
+                    <%- include('../partials/favourite', { home: home }) %>
+                  </div>
+              </div>
+          </div>
+      </main>
+  </body>
+</html>

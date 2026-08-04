@@ -1,0 +1,55 @@
+<%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <main class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-md max-w-md">
+      <div class="flex justify-center mb-6">
+        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-red-600 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.866 0-7 3.134-7 7h2c0-2.761 2.239-5 5-5s5 2.239 5 5h2c0-3.866-3.134-7-7-7z"/>
+          </svg>
+        </div>
+      </div>
+
+      <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Login with your info</h1>
+
+      <form action="/login" method="POST" class="space-y-4">
+        <%- include('../partials/errors', { errors: errors }) %>
+
+        <div class="relative">
+          <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 2v.511l-8 4.999-8-4.999V6h16zM4 18V8.478l7.447 4.655c.151.095.339.095.49 0L20 8.478V18H4z"/>
+            </svg>
+          </span>
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            value="<%= oldInput.email ? oldInput.email : '' %>"
+            class="w-full pl-11 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            required />
+        </div>
+
+        <div class="relative">
+          <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17 8V7a5 5 0 0 0-10 0v1H5v14h14V8h-2zm-8 0V7a3 3 0 0 1 6 0v1H9zm8 2v10H7V10h10z"/>
+            </svg>
+          </span>
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            class="w-full pl-11 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            required />
+        </div>
+
+        <input
+          type="submit"
+          value="Sign In"
+          class="w-full bg-red-500 text-white py-3 rounded-md hover:bg-red-600 transition duration-300 cursor-pointer" />
+      </form>
+    </main>
+  </body>
+</html>

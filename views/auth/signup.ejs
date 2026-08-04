@@ -1,0 +1,119 @@
+<%- include('../partials/head') %>
+  </head>
+  <body>
+    <%- include('../partials/nav') %>
+    <main class="container mx-auto mt-8 p-8 bg-white rounded-lg shadow-md max-w-2xl">
+      <div class="flex justify-center mb-6">
+        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-red-100 text-red-600 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.866 0-7 3.134-7 7h2c0-2.761 2.239-5 5-5s5 2.239 5 5h2c0-3.866-3.134-7-7-7z"/>
+          </svg>
+        </div>
+      </div>
+      <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Register as a new user</h1>
+      <form action="/signup" method="POST" class="space-y-4">
+        <%- include('../partials/errors', { errors: errors }) %>
+        
+        <div class="grid gap-4 md:grid-cols-2">
+
+          <div class="relative">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.866 0-7 3.134-7 7h2c0-2.761 2.239-5 5-5s5 2.239 5 5h2c0-3.866-3.134-7-7-7z"/>
+              </svg>
+            </span>
+            <input
+              type="text"
+              name="firstName"
+              placeholder="First Name"
+              value="<%= oldInput.firstName ? oldInput.firstName : '' %>"
+              class="w-full pl-11 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              required />
+          </div>
+          <div class="relative">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.866 0-7 3.134-7 7h2c0-2.761 2.239-5 5-5s5 2.239 5 5h2c0-3.866-3.134-7-7-7z"/>
+              </svg>
+            </span>
+            <input
+              type="text"
+              name="lastName"
+              placeholder="Last Name"
+              value="<%= oldInput.lastName ? oldInput.lastName : '' %>"
+              class="w-full pl-11 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500" />
+          </div>
+        </div>
+
+        <div class="relative">
+          <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zm0 2v.511l-8 4.999-8-4.999V6h16zM4 18V8.478l7.447 4.655c.151.095.339.095.49 0L20 8.478V18H4z"/>
+            </svg>
+          </span>
+          <input
+            type="email"
+            name="email"
+            placeholder="test@pop.com"
+            value="<%= oldInput.email ? oldInput.email : '' %>"
+            class="w-full pl-11 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+            required />
+        </div>
+
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="relative">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17 8V7a5 5 0 0 0-10 0v1H5v14h14V8h-2zm-8 0V7a3 3 0 0 1 6 0v1H9zm8 2v10H7V10h10z"/>
+              </svg>
+            </span>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              class="w-full pl-11 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              required />
+          </div>
+          <div class="relative">
+            <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17 8V7a5 5 0 0 0-10 0v1H5v14h14V8h-2zm-8 0V7a3 3 0 0 1 6 0v1H9zm8 2v10H7V10h10z"/>
+              </svg>
+            </span>
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm your password"
+              class="w-full pl-11 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+              required />
+          </div>
+        </div>
+
+        <div class="rounded-md border p-4 bg-gray-50">
+          <p class="mb-2 text-sm font-medium text-gray-700">User Type</p>
+           <div class="flex gap-6">
+            <label class="flex items-center gap-2 text-gray-700">
+              <input type="radio" name="userType" value="guest" id="guest" class="h-4 w-4 text-red-500" <%= oldInput.userType !== 'host' ? 'checked' : '' %> />
+              <span>Guest</span>
+            </label>
+            <label class="flex items-center gap-2 text-gray-700">
+              <input type="radio" name="userType" value="host" id="host" class="h-4 w-4 text-red-500" <%= oldInput.userType === 'host' ? 'checked' : '' %> />
+              <span>Host</span>
+            </label>
+          </div>
+        </div>
+
+        <label class="flex items-center gap-2 text-gray-700">
+          <input type="checkbox" name="terms" id="terms" class="h-4 w-4 text-red-500" required />
+          <span>I agree to the terms and conditions</span>
+        </label>
+
+        <input
+          type="submit"
+          value="Register"
+          class="w-full bg-red-500 text-white py-3 rounded-md hover:bg-red-600 transition duration-300 cursor-pointer"
+          required />
+      </form>
+    </main>
+  </body>
+</html>

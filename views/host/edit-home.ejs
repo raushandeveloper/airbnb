@@ -1,0 +1,74 @@
+<%- include('../partials/head') %>
+  </head>
+  <body class="bg-[#efe4d3]">
+    <%- include('../partials/nav') %>
+    <main class="container mx-auto mt-10 max-w-2xl rounded-2xl bg-[#fffaf4] p-8 shadow-xl">
+      <div class="mb-8 text-center">
+        <h1 class="text-3xl font-bold text-[#7a4a35]"><%= editing ? "Edit" : "Register" %> Your Home on AirBnB</h1>
+        <p class="mt-2 text-sm text-[#9a7659]">Share your property details and get it listed beautifully.</p>
+      </div>
+
+      <form action="/host/<%= editing ? "edit-home" : "add-home" %>" method="POST" enctype="multipart/form-data" class="mx-auto space-y-4">
+        <input type="hidden" name="id" value="<%= editing ? home._id : '' %>" />
+
+        <input
+          type="text"
+          name="houseName"
+          value="<%= editing ? home.houseName : '' %>"
+          placeholder="Enter your House Name"
+          class="w-full rounded-md border border-[#d8c2a5] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c45b4b]"
+        />
+
+        <input
+          type="text"
+          name="price"
+          value="<%= editing ? home.price : '' %>"
+          placeholder="Price Per Night"
+          class="w-full rounded-md border border-[#d8c2a5] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c45b4b]"
+        />
+
+        <input
+          type="text"
+          name="location"
+          value="<%= editing ? home.location : '' %>"
+          placeholder="Location"
+          class="w-full rounded-md border border-[#d8c2a5] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c45b4b]"
+        />
+
+        <input
+          type="text"
+          name="rating"
+          value="<%= editing ? home.rating : '' %>"
+          placeholder="Rating"
+          class="w-full rounded-md border border-[#d8c2a5] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c45b4b]"
+        />
+
+        <input
+          type="file"
+          name="photo"
+          accept="image/jpg, image/jpeg, image/png"
+          class="w-full rounded-md border border-[#d8c2a5] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c45b4b]"
+        />
+
+        <input
+          type="file"
+          name="pdf"
+          accept="application/pdf"
+          class="w-full rounded-md border border-[#d8c2a5] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c45b4b]"
+        />
+
+        <textarea
+          name="description"
+          placeholder="Describe your home"
+          class="w-full rounded-md border border-[#d8c2a5] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#c45b4b]"
+        ><%= editing ? home.description : '' %></textarea>
+
+        <input
+          type="submit"
+          value="<%= editing ? "Update Home" : "Add Home" %>"
+          class="w-full rounded-md bg-red-500 px-4 py-3 font-semibold text-white transition duration-300 hover:bg-red-600"
+        />
+      </form>
+    </main>
+  </body>
+</html>
