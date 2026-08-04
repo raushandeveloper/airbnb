@@ -8,6 +8,8 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const { default: mongoose } = require('mongoose');
 const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 // DB connection string comes from Vercel Environment Variable now
 const DB_PATH = process.env.MONGO_URI;
@@ -21,15 +23,12 @@ const errorsController = require("./controllers/errors");
 
 const app = express();
 
-// Vercel's filesystem is read-only except /tmp.
-// On Vercel use /tmp/uploads, locally use the normal project uploads folder.
-const uploadDir = process.env.VERCEL
-  ? '/tmp/uploads'
-  : path.join(rootDir, 'uploads');
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+// Configure Cloudinary using credentials from environment variables
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(rootDir, 'views'));
@@ -44,27 +43,40 @@ store.on('error', (err) => {
   console.log('Session store error: ', err);
 });
 
-const randomString = (length) => {
-  const characters = 'abcdefghijklmnopqrstuvwxyz';
-  let result = '';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
+// Photos go into an "airbnb/photos" folder on Cloudinary, stored as images
+const photoStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'airbnb/photos',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
   },
-  filename: (req, file, cb) => {
-    cb(null, randomString(10) + path.extname(file.originalname));
-  }
 });
 
+// PDFs go into an "airbnb/pdfs" folder, stored as raw files
+const pdfStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'airbnb/pdfs',
+    resource_type: 'raw',
+    allowed_formats: ['pdf'],
+  },
+});
+
+// multer needs one storage engine per call, so we use a small custom
+// storage wrapper that picks photoStorage or pdfStorage per file field.
+const multiStorage = {
+  _handleFile(req, file, cb) {
+    const storage = file.fieldname === 'pdf' ? pdfStorage : photoStorage;
+    storage._handleFile(req, file, cb);
+  },
+  _removeFile(req, file, cb) {
+    const storage = file.fieldname === 'pdf' ? pdfStorage : photoStorage;
+    storage._removeFile(req, file, cb);
+  },
+};
+
 const multerOptions = {
-  storage: storage,
+  storage: multiStorage,
 }
 
 app.use(express.urlencoded({ extended: true }));
@@ -72,7 +84,6 @@ app.use(multer(multerOptions).fields([
   { name: 'photo', maxCount: 1 },
   { name: 'pdf', maxCount: 1 }
 ]));
-app.use('/uploads', express.static(uploadDir));
 app.use(express.static(path.join(rootDir, 'public')))
 
 app.use(session({

@@ -1,5 +1,3 @@
-const fs = require("fs");
-const path = require("path");
 const Home = require("../models/home");
 
 exports.getAddHome = (req, res, next) => {
@@ -57,8 +55,9 @@ exports.postAddHome = (req, res, next) => {
   }
 
   const { houseName, price, location, rating, description } = req.body;
-  const photo = `/uploads/${req.files.photo[0].filename}`;
-  const pdf = req.files?.pdf?.[0] ? `/uploads/${req.files.pdf[0].filename}` : null;
+  // req.files.*.path now holds the full Cloudinary URL (e.g. https://res.cloudinary.com/...)
+  const photo = req.files.photo[0].path;
+  const pdf = req.files?.pdf?.[0] ? req.files.pdf[0].path : null;
   const home = new Home({
     houseName,
     price,
@@ -92,20 +91,14 @@ exports.postEditHome = (req, res, next) => {
       home.rating = rating;
       home.description = description;
 
+      // Old photo/pdf on Cloudinary is simply left as-is (orphaned) and
+      // overwritten with the new Cloudinary URL. No local file to delete anymore.
       if (req.files?.photo?.[0]) {
-        const oldPhotoPath = home.photo ? path.join(process.cwd(), 'uploads', path.basename(home.photo)) : null;
-        if (oldPhotoPath && fs.existsSync(oldPhotoPath)) {
-          fs.unlinkSync(oldPhotoPath);
-        }
-        home.photo = `/uploads/${req.files.photo[0].filename}`;
+        home.photo = req.files.photo[0].path;
       }
 
       if (req.files?.pdf?.[0]) {
-        const oldPdfPath = home.pdf ? path.join(process.cwd(), 'uploads', path.basename(home.pdf)) : null;
-        if (oldPdfPath && fs.existsSync(oldPdfPath)) {
-          fs.unlinkSync(oldPdfPath);
-        }
-        home.pdf = `/uploads/${req.files.pdf[0].filename}`;
+        home.pdf = req.files.pdf[0].path;
       }
 
       home
