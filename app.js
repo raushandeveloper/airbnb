@@ -111,6 +111,13 @@ app.use("/host", (req, res, next) => {
 app.use("/host", hostRouter);
 app.use(errorsController.pageNotFound);
 
+// Global error handler — catches errors thrown anywhere (including multer/Cloudinary
+// upload middleware) so we get a readable message instead of a blank 500.
+app.use((err, req, res, next) => {
+  console.log("Global error handler caught: ", err);
+  res.status(500).send("Server error: " + (err && err.message ? err.message : JSON.stringify(err)));
+});
+
 // Connect to Mongo once (cached across invocations to avoid reconnecting on every request)
 let isConnected = false;
 async function connectDB() {

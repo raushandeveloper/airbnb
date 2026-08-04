@@ -109,12 +109,12 @@ exports.postEditHome = (req, res, next) => {
         })
         .catch((err) => {
           console.log("Error while updating ", err);
-          next(err);
+          res.status(500).send("Error while updating: " + (err && err.message ? err.message : JSON.stringify(err)));
         });
     })
     .catch((err) => {
       console.log("Error while finding home ", err);
-      next(err);
+      res.status(500).send("Error while finding home: " + (err && err.message ? err.message : JSON.stringify(err)));
     });
 };
 
